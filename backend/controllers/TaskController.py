@@ -1,5 +1,6 @@
 import os
 import json
+import base64
 from typing import Optional
 from uuid import uuid4
 from fastapi import APIRouter, Depends, HTTPException, UploadFile, File, Form
@@ -29,13 +30,31 @@ def create_task(task: schemas.TaskCreate, db: Session = Depends(get_db)):
     db.refresh(db_task)
     return db_task
 
+# @router.get("/tasks", response_model=list[schemas.TaskOut])
+# def get_tasks(db: Session = Depends(get_db)):
+#     tasks = db.query(Task).all()
+#     for task in tasks:
+#         if task.photo:
+#             task.photo = task.photo
+#     return tasks
+
 @router.get("/tasks", response_model=list[schemas.TaskOut])
-def get_tasks(db: Session = Depends(get_db)):
+def get_tasks_with_files(db: Session = Depends(get_db)):
     tasks = db.query(Task).all()
     for task in tasks:
         if task.photo:
-            task.photo = task.photo
+            with open(task.photo, "rb") as file:
+                task.photo = base64.b64encode(file.read()).decode('utf-8')
     return tasks
+
+# @router.get("/tasks/{task_id}", response_model=schemas.TaskOut)
+# def get_task(task_id: int, db: Session = Depends(get_db)):
+#     task = db.query(Task).filter(Task.id == task_id).first()
+#     if not task:
+#         raise HTTPException(status_code=404, detail="Задача не найдена")
+#     if task.photo:
+#         task.photo = task.photo
+#     return task
 
 @router.get("/tasks/{task_id}", response_model=schemas.TaskOut)
 def get_task(task_id: int, db: Session = Depends(get_db)):
@@ -43,7 +62,8 @@ def get_task(task_id: int, db: Session = Depends(get_db)):
     if not task:
         raise HTTPException(status_code=404, detail="Задача не найдена")
     if task.photo:
-        task.photo = task.photo
+        with open(task.photo, "rb") as file:
+                task.photo = base64.b64encode(file.read()).decode('utf-8')
     return task
 
 @router.put("/tasks/{task_id}", response_model=schemas.TaskOut)
