@@ -28,7 +28,7 @@ class TaskOut(TaskBase):
 class UserBase(BaseModel):
     name: Optional[str]
     phone: Optional[str]
-    pin: constr(min_length=4, max_length=4)  # как строка с 4 символами (ведущие нули сохраняются)
+    pin: Optional[int]  # как строка с 4 символами (ведущие нули сохраняются)
 
 class UserCreate(UserBase):
     pass
