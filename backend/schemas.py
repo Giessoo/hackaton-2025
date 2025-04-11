@@ -1,5 +1,5 @@
 from pydantic import BaseModel, constr
-from typing import Literal, Optional, List
+from typing import Literal, Optional, Dict
 from datetime import datetime
 
 # ---------- TASKS ----------
@@ -12,13 +12,20 @@ class TaskBase(BaseModel):
     photo: Optional[str]
     team_id: Optional[int]
 
-class TaskCreate(TaskBase):
-    pass
+class TaskCreate(BaseModel):
+    title: str
+    description: str
+    status: int
 
-class TaskOut(TaskBase):
+class TaskOut(BaseModel):
     id: int
-    created_at: datetime
-    updated_at: datetime
+    task_type: Optional[int]
+    address: Optional[str]
+    device_type: Optional[str]
+    device_num: Optional[int]
+    status: Optional[int]
+    photo: Optional[str]
+    team_id: Optional[int]
 
     class Config:
         orm_mode = True
