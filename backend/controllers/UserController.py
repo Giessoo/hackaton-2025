@@ -1,12 +1,8 @@
 import hashlib
-import uvicorn
 import schemas
-from typing import Optional
 from models.User import User
 from fastapi import APIRouter, HTTPException, Depends
-from pydantic import BaseModel
-from datetime import datetime
-from db.database import Base, SessionLocal, engine, get_db
+from db.database import get_db
 from sqlalchemy.orm import Session
 
 router = APIRouter()
@@ -20,9 +16,7 @@ def generate_pin_code(full_name):
     
     return pin_code[:4]
 
-##############################
-
-@router.post("/users", response_model=schemas.UserOut)
+@router.post("/user", response_model=schemas.UserOut)
 async def create_user(user: schemas.UserCreate, db: Session = Depends(get_db)):
     user.pin = generate_pin_code(user.name)
     
