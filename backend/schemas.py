@@ -1,5 +1,5 @@
 from pydantic import BaseModel, constr
-from typing import Optional, List
+from typing import Literal, Optional, List
 from datetime import datetime
 
 # ---------- TASKS ----------
@@ -8,7 +8,7 @@ class TaskBase(BaseModel):
     address: Optional[str]
     device_type: Optional[str]
     device_num: Optional[int]
-    status: Optional[int]
+    status: Literal[0, 1, 2] = 0  # только допустимые статусы
     photo: Optional[str]
     team_id: Optional[int]
 
@@ -45,7 +45,7 @@ class UserOut(UserBase):
 # ---------- TEAMS ----------
 class TeamBase(BaseModel):
     title: Optional[str]
-    status: Optional[int]
+    status: Literal[0, 1] = 0
 
 class TeamCreate(TeamBase):
     pass

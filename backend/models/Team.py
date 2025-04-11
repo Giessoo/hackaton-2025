@@ -7,6 +7,9 @@ from models import UserTeam, Task
 class Team(Base):
     __tablename__ = "teams"
 
+    STATUS_INACTIVE = 0
+    STATUS_ACTIVE = 1
+
     id = Column(Integer, primary_key=True, index=True)
     title = Column(String, nullable=True)
     status = Column(Integer, nullable=True)

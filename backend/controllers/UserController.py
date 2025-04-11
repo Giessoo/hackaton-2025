@@ -1,12 +1,8 @@
 import hashlib
-import uvicorn
 import schemas
-from typing import Optional
 from models.User import User
 from fastapi import APIRouter, HTTPException, Depends
-from pydantic import BaseModel
-from datetime import datetime
-from db.database import Base, SessionLocal, engine, get_db
+from db.database import get_db
 from sqlalchemy.orm import Session
 
 router = APIRouter()
@@ -50,7 +46,7 @@ async def update_user(user_id: int, user: schemas.UserBase, db: Session = Depend
     
     return db_user
 
-@router.delete("/user/{user_id}", response_model=schemas.UserOut)
+@router.delete("/user/{user_id}")
 async def delete_user(user_id: int, db: Session = Depends(get_db)):
     db_user = db.query(User).filter(User.id == user_id).first()
     if not db_user:
@@ -59,4 +55,4 @@ async def delete_user(user_id: int, db: Session = Depends(get_db)):
     db.delete(db_user)
     db.commit()
     
-    return db_user
+    return {"detail": "Пользователь удален"}
