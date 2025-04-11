@@ -6,6 +6,10 @@ from models.Team import Team
 class Task(Base):
     __tablename__ = "tasks"
 
+    STATUS_INACTIVE = 0
+    STATUS_ACTIVE = 1
+    STATUS_COMPLETED = 2
+
     id = Column(Integer, primary_key=True, index=True)
     task_type = Column(SmallInteger, nullable=True)
     address = Column(String(255), nullable=True)
