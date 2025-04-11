@@ -12,6 +12,10 @@ class TaskBase(BaseModel):
     photo: Optional[str]
     team_id: Optional[int]
 
+class TaskSetTeam(TaskBase):
+    task_id: int
+    team_id: int
+
 class TaskCreate(TaskBase):
     pass
 

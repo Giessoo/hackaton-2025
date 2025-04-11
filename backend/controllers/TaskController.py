@@ -14,6 +14,17 @@ def create_task(task: schemas.TaskCreate, db: Session = Depends(get_db)):
     db.refresh(db_task)
     return db_task
 
+@router.post("/tasks", response_model=schemas.TaskOut)
+def set_team_task(task: schemas.TaskSetTeam, db: Session = Depends(get_db)):
+    db_task = db.query(Task).filter(Task.id == task.task_id).first()
+    if not task:
+        raise HTTPException(status_code=404, detail="Задача не найдена")
+
+    db_task.team_id = task.team_id
+    db.commit()
+    db.refresh(task)
+    return task
+
 @router.get("/tasks", response_model=list[schemas.TaskOut])
 def get_tasks(db: Session = Depends(get_db)):
     return db.query(Task).all()
