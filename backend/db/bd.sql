@@ -37,7 +37,6 @@ CREATE TABLE user_teams (
   id SERIAL PRIMARY KEY,
   team_id INT,
   user_id INT,
-  status INT,
   created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
   updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
   FOREIGN KEY (team_id) REFERENCES teams(id) ON DELETE CASCADE,

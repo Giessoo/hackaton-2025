@@ -19,6 +19,14 @@ async def create_user(team: schemas.TeamCreate, db: Session = Depends(get_db)):
 async def get_teams(db: Session = Depends(get_db)):
     return db.query(Team).all()
 
+@router.get("/team/{team_id}", response_model=schemas.TeamOut)
+async def get_teams_by_id(team_id : int, db: Session = Depends(get_db)):
+    db_team = db.query(Team).filter(Team.id == team_id).first()
+    if not db_team:
+        raise HTTPException(status_code=404, detail="Team not found")
+    
+    return db_team
+
 @router.put("/team/{team_id}", response_model=schemas.TeamOut)
 async def update_team(team_id: int, team: schemas.TeamBase, db: Session = Depends(get_db)):
     db_team = db.query(Team).filter(Team.id == team_id).first()
@@ -32,7 +40,7 @@ async def update_team(team_id: int, team: schemas.TeamBase, db: Session = Depend
     
     return db_team
 
-@router.delete("/team/{team_id}", response_model=schemas.TeamOut)
+@router.delete("/team/{team_id}")
 async def delete_user(team_id: int, db: Session = Depends(get_db)):
     db_team = db.query(Team).filter(Team.id == team_id).first()
     if not db_team:
@@ -41,4 +49,4 @@ async def delete_user(team_id: int, db: Session = Depends(get_db)):
     db.delete(db_team)
     db.commit()
     
-    return db_team
+    return {"detail": "Бригада удалена"}
