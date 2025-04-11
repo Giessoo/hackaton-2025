@@ -1,6 +1,7 @@
 from sqlalchemy import Column, Integer, String, ForeignKey, SmallInteger, TIMESTAMP, func
 from sqlalchemy.orm import relationship
 from db.database import Base
+from models.Team import Team
 
 class Task(Base):
     __tablename__ = "tasks"
@@ -17,4 +18,4 @@ class Task(Base):
     updated_at = Column(TIMESTAMP, server_default=func.now(), onupdate=func.now())
 
     # Связь с таблицей teams
-    team = relationship("Team", back_populates="tasks")
+    team = relationship("Team") 

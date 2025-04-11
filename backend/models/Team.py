@@ -2,6 +2,7 @@ from sqlalchemy import Column, Integer, String, TIMESTAMP
 from sqlalchemy.orm import relationship
 from db.database import Base
 from datetime import datetime
+from models import UserTeam, Task
 
 class Team(Base):
     __tablename__ = "teams"
