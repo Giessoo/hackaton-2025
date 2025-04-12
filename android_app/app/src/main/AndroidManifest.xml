@@ -24,6 +24,9 @@
         <activity
             android:name=".activities.InspectorActivity"
             android:exported="true"/>
+        <activity
+            android:name=".activities.FillingActivity"
+            android:exported="true"/>
     </application>
 
 </manifest>
