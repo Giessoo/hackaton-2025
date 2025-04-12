@@ -34,14 +34,17 @@ class TaskOut(BaseModel):
 # ---------- USERS ----------
 class UserBase(BaseModel):
     name: Optional[str]
-    phone: Optional[str]
-    pin: Optional[int]  # как строка с 4 символами (ведущие нули сохраняются)
+    phone: str
+    password: str
 
 class UserCreate(UserBase):
     pass
 
 class UserOut(UserBase):
     id: int
+    name: str
+    phone: str
+    token: str
     created_at: datetime
     updated_at: datetime
 

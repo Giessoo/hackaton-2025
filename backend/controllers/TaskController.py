@@ -11,6 +11,8 @@ from db.database import get_db
 from models.Task import Task
 from models.User import User
 import schemas
+from auth import get_current_user
+
 router = APIRouter()
 
 UPLOAD_FOLDER = "storage"
@@ -25,27 +27,19 @@ def save_file(file: UploadFile) -> str:
     return file_path
 
 @router.post("/tasks", response_model=schemas.TaskOut)
-def create_task(task: schemas.TaskCreate, db: Session = Depends(get_db)):
+def create_task(task: schemas.TaskCreate, db: Session = Depends(get_db), current_user: User = Depends(get_current_user)):
     db_task = Task(**task.dict())
     db.add(db_task)
     db.commit()
     db.refresh(db_task)
     return db_task
 
-# @router.get("/tasks", response_model=list[schemas.TaskOut])
-# def get_tasks(db: Session = Depends(get_db)):
-#     tasks = db.query(Task).all()
-#     for task in tasks:
-#         if task.photo:
-#             task.photo = task.photo
-#     return tasks
-
 @router.get("/tasks/{task_id}/users", response_model=list[schemas.UserOut ])
-async def get_task_users(task_id: int, db: Session = Depends(get_db)):
+async def get_task_users(task_id: int, db: Session = Depends(get_db), current_user: User = Depends(get_current_user)):
     return db.query(User).all()
 
 @router.get("/tasks", response_model=list[schemas.TaskOut])
-def get_tasks_with_files(db: Session = Depends(get_db)):
+def get_tasks_with_files(db: Session = Depends(get_db), current_user: User = Depends(get_current_user)):
     tasks = db.query(Task).all()
     for task in tasks:
         if task.photo:
@@ -81,18 +75,8 @@ def get_tasks_with_files(db: Session = Depends(get_db)):
     
     return tasks
 
-
-# @router.get("/tasks/{task_id}", response_model=schemas.TaskOut)
-# def get_task(task_id: int, db: Session = Depends(get_db)):
-#     task = db.query(Task).filter(Task.id == task_id).first()
-#     if not task:
-#         raise HTTPException(status_code=404, detail="Задача не найдена")
-#     if task.photo:
-#         task.photo = task.photo
-#     return task
-
 @router.get("/tasks/{task_id}", response_model=schemas.TaskOut)
-def get_task(task_id: int, db: Session = Depends(get_db)):
+def get_task(task_id: int, db: Session = Depends(get_db), current_user: User = Depends(get_current_user)):
     task = db.query(Task).filter(Task.id == task_id).first()
     if not task:
         raise HTTPException(status_code=404, detail="Задача не найдена")
@@ -136,7 +120,8 @@ async def update_task(
     team_id: Optional[int] = Form(None),
     before_photo: UploadFile = File(None),
     after_photo: UploadFile = File(None),
-    db: Session = Depends(get_db)
+    db: Session = Depends(get_db),
+    current_user: User = Depends(get_current_user)
 ):
     task = db.query(Task).filter(Task.id == task_id).first()
     if not task:
@@ -167,7 +152,7 @@ async def update_task(
 
 
 @router.delete("/tasks/{task_id}")
-def delete_task(task_id: int, db: Session = Depends(get_db)):
+def delete_task(task_id: int, db: Session = Depends(get_db), current_user: User = Depends(get_current_user)):
     task = db.query(Task).filter(Task.id == task_id).first()
     if not task:
         raise HTTPException(status_code=404, detail="Задача не найдена")
