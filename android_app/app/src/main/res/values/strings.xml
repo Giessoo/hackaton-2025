@@ -3,4 +3,7 @@
     <string name="pin">Введите PIN-код</string>
     <string name="confirm">Подтвердить</string>
     <string name="add_inspector">Добавить инспектора</string>
+    <string name="press_for_overview">Нажмите для предпросмотра</string>
+    <string name="back">Назад</string>
+    <string name="cancel">Отмена</string>
 </resources>

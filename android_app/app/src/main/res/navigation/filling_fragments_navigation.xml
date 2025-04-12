@@ -23,15 +23,22 @@
         tools:layout="@layout/fragment_filling_checkboxes">
 
         <action
-            android:id="@+id/action_details_to_home"
+            android:id="@+id/action_filling_check_boxes_to_overview"
             app:destination="@id/overviewDocx"
             app:popUpTo="@id/startFilling"/>
+        <action
+            android:id="@+id/action_filling_check_boxes_to_start"
+            app:destination="@id/startFilling"/>
     </fragment>
 
     <fragment
         android:id="@+id/overviewDocx"
         android:name="com.tns_energo_pnz.app.fragments.OverviewFragment"
         android:label="Settings"
-        tools:layout="@layout/fragment_overview_docx"/>
+        tools:layout="@layout/fragment_overview_docx">
+        <action
+            android:id="@+id/action_overview_to_start"
+            app:destination="@id/startFilling"/>
+    </fragment>
 
 </navigation>

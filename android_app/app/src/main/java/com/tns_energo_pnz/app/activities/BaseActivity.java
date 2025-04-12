@@ -7,6 +7,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
+import androidx.fragment.app.Fragment;
 
 import com.tns_energo_pnz.app.R;
 
@@ -23,4 +24,13 @@ public abstract class BaseActivity extends AppCompatActivity {
         });
     }
     protected abstract int getLayout();
+    protected int getFragmentContainer(){
+        return R.id.fragment_container;
+    }
+
+    public void switchFragment(Fragment fragment) {
+        getSupportFragmentManager().beginTransaction()
+            .replace(getFragmentContainer(), fragment)
+            .commit();
+    }
 }

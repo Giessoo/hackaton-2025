@@ -1,5 +1,6 @@
 package com.tns_energo_pnz.app.activities;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
@@ -18,8 +19,15 @@ public class InspectorActivity extends BaseActivity {
     private void initButtonsListeners(){
         Button inspector_button1 = findViewById(R.id.inspector_button1);
         Button inspector_button2 = findViewById(R.id.inspector_button2);
+        Button confirm_button = findViewById(R.id.confirm_button);
+        confirm_button.setOnClickListener(this::sendNextActivity);
         inspector_button1.setOnClickListener(this::callPinCodeDialog);
         inspector_button2.setOnClickListener(this::callPinCodeDialog);
+    }
+
+    private void sendNextActivity(View view){
+        Intent intent = new Intent(this, FillingActivity.class);
+        startActivity(intent);
     }
 
     private void callPinCodeDialog(View view){
