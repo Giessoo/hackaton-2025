@@ -61,9 +61,24 @@ def get_task(task_id: int, db: Session = Depends(get_db)):
     task = db.query(Task).filter(Task.id == task_id).first()
     if not task:
         raise HTTPException(status_code=404, detail="Задача не найдена")
+    
     if task.photo:
-        with open(task.photo, "rb") as file:
-                task.photo = base64.b64encode(file.read()).decode('utf-8')
+        try:
+            photo_paths = json.loads(task.photo)
+            result = {}
+            for key, path in photo_paths.items():
+                try:
+                    with open(path, "rb") as file:
+                        result[key] = file.read()
+                except Exception:
+                    result[key] = path
+            task.photo = json.dumps(result)
+        except json.JSONDecodeError:
+            try:
+                with open(task.photo, "rb") as file:
+                    task.photo = file.read()
+            except Exception:
+                pass
     return task
 
 @router.put("/tasks/{task_id}", response_model=schemas.TaskOut)
