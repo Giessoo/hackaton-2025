@@ -83,12 +83,22 @@ def get_task(task_id: int, db: Session = Depends(get_db)):
     
     if task.photo:
         try:
+            photo_paths = json.loads(task.photo)
+            result = {}
             zip_buffer = io.BytesIO()
+            
             with zipfile.ZipFile(zip_buffer, 'w', zipfile.ZIP_DEFLATED) as zipf:
-                zipf.write(task.photo)
+                for key, path in photo_paths.items():
+                    try:
+                        zipf.write(path)
+                        result[key] = "ZIPPED"  # Маркер, что файл в архиве
+                    except Exception:
+                        result[key] = path  # Оригинальный путь при ошибке
             
             zip_buffer.seek(0)
-            task.photo = base64.b64encode(zip_buffer.read()).decode('utf-8')
+            zip_base64 = base64.b64encode(zip_buffer.read()).decode('utf-8')
+            result['_zip'] = zip_base64  # Добавляем архив к результату
+            task.photo = json.dumps(result)
             
         except Exception as e:
             print("Exception!")
