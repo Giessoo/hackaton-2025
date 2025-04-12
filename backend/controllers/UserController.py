@@ -1,6 +1,7 @@
 import hashlib
 import schemas
 from models.User import User
+from models.UserTeam import UserTeam
 from fastapi import APIRouter, HTTPException, Depends
 from db.database import get_db
 from sqlalchemy.orm import Session
@@ -35,7 +36,7 @@ async def get_users(db: Session = Depends(get_db)):
 async def update_user(user_id: int, user: schemas.UserBase, db: Session = Depends(get_db)):
     db_user = db.query(User).filter(User.id == user_id).first()
     if not db_user:
-        raise HTTPException(status_code=404, detail="User  not found")
+        raise HTTPException(status_code=404, detail="User not found")
     
     db_user.name = user.name
     db_user.pin = generate_pin_code(user.name)
@@ -48,7 +49,7 @@ async def update_user(user_id: int, user: schemas.UserBase, db: Session = Depend
 async def delete_user(user_id: int, db: Session = Depends(get_db)):
     db_user = db.query(User).filter(User.id == user_id).first()
     if not db_user:
-        raise HTTPException(status_code=404, detail="User  not found")
+        raise HTTPException(status_code=404, detail="User not found")
     
     db.delete(db_user)
     db.commit()

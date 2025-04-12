@@ -9,7 +9,7 @@ class UserTeam(Base):
     id = Column(Integer, primary_key=True, index=True)
     team_id = Column(Integer, ForeignKey("teams.id"))
     user_id = Column(Integer, ForeignKey("users.id"))
-    status = Column(Integer, nullable=True)
+    #status = Column(Integer, nullable=True)
     created_at = Column(TIMESTAMP, default=datetime.utcnow)
     updated_at = Column(TIMESTAMP, default=datetime.utcnow, onupdate=datetime.utcnow)
 

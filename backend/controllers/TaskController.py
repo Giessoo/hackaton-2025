@@ -9,6 +9,7 @@ from fastapi import APIRouter, Depends, HTTPException, UploadFile, File, Form
 from sqlalchemy.orm import Session
 from db.database import get_db
 from models.Task import Task
+from models.User import User
 import schemas
 router = APIRouter()
 
@@ -38,6 +39,10 @@ def create_task(task: schemas.TaskCreate, db: Session = Depends(get_db)):
 #         if task.photo:
 #             task.photo = task.photo
 #     return tasks
+
+@router.get("/tasks/{task_id}/users", response_model=list[schemas.UserOut ])
+async def get_task_users(task_id: int, db: Session = Depends(get_db)):
+    return db.query(User).all()
 
 @router.get("/tasks", response_model=list[schemas.TaskOut])
 def get_tasks_with_files(db: Session = Depends(get_db)):
