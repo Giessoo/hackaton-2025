@@ -1,6 +1,6 @@
 from fastapi import FastAPI
 from db.database import Base, engine
-from controllers import TaskController, UserController, TeamsController, UserTeamController
+from controllers import TaskController, UserController, TeamsController, UserTeamController, AuthController
 
 app = FastAPI()
 
@@ -10,3 +10,4 @@ app.include_router(TaskController.router)
 app.include_router(UserController.router)
 app.include_router(TeamsController.router)
 app.include_router(UserTeamController.router)
+app.include_router(AuthController.router)

@@ -10,7 +10,8 @@ class User(Base):
     id = Column(Integer, primary_key=True, index=True)
     name = Column(String, nullable=True)
     phone = Column(String, nullable=True)
-    pin = Column(Integer, nullable=True)
+    password = Column(String, nullable=False)
+    token = Column(String, nullable=False, unique=True)
     created_at = Column(TIMESTAMP, default=datetime.utcnow)
     updated_at = Column(TIMESTAMP, default=datetime.utcnow, onupdate=datetime.utcnow)
 

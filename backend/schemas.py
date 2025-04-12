@@ -12,12 +12,12 @@ class TaskBase(BaseModel):
     photo: Optional[str]
     team_id: Optional[int]
 
-class TaskCreate(BaseModel):
+class TaskCreate(TaskBase):
     title: str
-    description: str
+    address: str
     status: int
 
-class TaskOut(BaseModel):
+class TaskOut(TaskBase):
     id: int
     task_type: Optional[int]
     address: Optional[str]
@@ -34,14 +34,17 @@ class TaskOut(BaseModel):
 # ---------- USERS ----------
 class UserBase(BaseModel):
     name: Optional[str]
-    phone: Optional[str]
-    pin: Optional[int]  # как строка с 4 символами (ведущие нули сохраняются)
+    phone: str
+    password: str
 
 class UserCreate(UserBase):
     pass
 
 class UserOut(UserBase):
     id: int
+    name: str
+    phone: str
+    token: str
     created_at: datetime
     updated_at: datetime
 
