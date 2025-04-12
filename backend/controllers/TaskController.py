@@ -45,24 +45,35 @@ def get_tasks_with_files(db: Session = Depends(get_db)):
     for task in tasks:
         if task.photo:
             try:
-                # Парсим JSON строку
                 photo_paths = json.loads(task.photo)
-                
-                # Обрабатываем каждый путь
                 result = {}
-                for key, path in photo_paths.items():
-                    try:
-                        with open(path, "rb") as file:
-                            result[key] = base64.b64encode(file.read()).decode('utf-8')
-                    except Exception as file_error:
-                        # Если не удалось прочитать файл, оставляем оригинальный путь
-                        result[key] = path
+                zip_buffer = io.BytesIO()
                 
-                # Преобразуем обратно в JSON строку
+                with zipfile.ZipFile(zip_buffer, 'w', zipfile.ZIP_DEFLATED) as zipf:
+                    for key, path in photo_paths.items():
+                        try:
+                            zipf.write(path)
+                            result[key] = "ZIPPED"
+                        except Exception as e:
+                            result[key] = path
+                
+                zip_buffer.seek(0)
+                zip_base64 = base64.b64encode(zip_buffer.read()).decode('utf-8')
+                result['_zip'] = zip_base64
+                
                 task.photo = json.dumps(result)
+                
             except json.JSONDecodeError:
-                # Если это не JSON, оставляем как есть
-                pass
+                try:
+                    zip_buffer = io.BytesIO()
+                    with zipfile.ZipFile(zip_buffer, 'w', zipfile.ZIP_DEFLATED) as zipf:
+                        zipf.write(task.photo)
+                    
+                    zip_buffer.seek(0)
+                    task.photo = base64.b64encode(zip_buffer.read()).decode('utf-8')
+                except Exception as e:
+                    pass
+    
     return tasks
 
 
