@@ -8,16 +8,15 @@ from uuid import uuid4
 from fastapi import APIRouter, Depends, HTTPException, UploadFile, File, Form
 from sqlalchemy.orm import Session
 from db.database import get_db
-from models.Task import Task
 from models.User import User
 import schemas
 from auth import get_current_user
+import repositories.TaskRepository as TaskRepository
 
 router = APIRouter()
-
 UPLOAD_FOLDER = "storage"
-
 os.makedirs(UPLOAD_FOLDER, exist_ok=True)
+
 
 def save_file(file: UploadFile) -> str:
     filename = f"{uuid4().hex}_{file.filename}"
@@ -26,85 +25,81 @@ def save_file(file: UploadFile) -> str:
         buffer.write(file.file.read())
     return file_path
 
+
 @router.post("/tasks", response_model=schemas.TaskOut)
 def create_task(task: schemas.TaskCreate, db: Session = Depends(get_db), current_user: User = Depends(get_current_user)):
-    db_task = Task(**task.dict())
-    db.add(db_task)
-    db.commit()
-    db.refresh(db_task)
-    return db_task
+    return TaskRepository.create_task(task, db)
 
-@router.get("/tasks/{task_id}/users", response_model=list[schemas.UserOut ])
-async def get_task_users(task_id: int, db: Session = Depends(get_db), current_user: User = Depends(get_current_user)):
+
+@router.get("/tasks/{task_id}/users", response_model=list[schemas.UserOut])
+def get_task_users(task_id: int, db: Session = Depends(get_db), current_user: User = Depends(get_current_user)):
     return db.query(User).all()
+
 
 @router.get("/tasks", response_model=list[schemas.TaskOut])
 def get_tasks_with_files(db: Session = Depends(get_db), current_user: User = Depends(get_current_user)):
-    tasks = db.query(Task).all()
+    tasks = TaskRepository.get_all_tasks(db)
     for task in tasks:
         if task.photo:
             try:
                 photo_paths = json.loads(task.photo)
                 result = {}
                 zip_buffer = io.BytesIO()
-                
+
                 with zipfile.ZipFile(zip_buffer, 'w', zipfile.ZIP_DEFLATED) as zipf:
                     for key, path in photo_paths.items():
                         try:
                             zipf.write(path)
                             result[key] = "ZIPPED"
-                        except Exception as e:
+                        except Exception:
                             result[key] = path
-                
+
                 zip_buffer.seek(0)
                 zip_base64 = base64.b64encode(zip_buffer.read()).decode('utf-8')
                 result['_zip'] = zip_base64
-                
                 task.photo = json.dumps(result)
-                
+
             except json.JSONDecodeError:
                 try:
                     zip_buffer = io.BytesIO()
                     with zipfile.ZipFile(zip_buffer, 'w', zipfile.ZIP_DEFLATED) as zipf:
                         zipf.write(task.photo)
-                    
                     zip_buffer.seek(0)
                     task.photo = base64.b64encode(zip_buffer.read()).decode('utf-8')
-                except Exception as e:
+                except Exception:
                     pass
-    
     return tasks
+
 
 @router.get("/tasks/{task_id}", response_model=schemas.TaskOut)
 def get_task(task_id: int, db: Session = Depends(get_db), current_user: User = Depends(get_current_user)):
-    task = db.query(Task).filter(Task.id == task_id).first()
+    task = TaskRepository.get_task(task_id, db)
     if not task:
         raise HTTPException(status_code=404, detail="Задача не найдена")
-    
+
     if task.photo:
         try:
             photo_paths = json.loads(task.photo)
             result = {}
             zip_buffer = io.BytesIO()
-            
+
             with zipfile.ZipFile(zip_buffer, 'w', zipfile.ZIP_DEFLATED) as zipf:
                 for key, path in photo_paths.items():
                     try:
                         zipf.write(path)
-                        result[key] = "ZIPPED"  # Маркер, что файл в архиве
+                        result[key] = "ZIPPED"
                     except Exception:
-                        result[key] = path  # Оригинальный путь при ошибке
-            
+                        result[key] = path
+
             zip_buffer.seek(0)
             zip_base64 = base64.b64encode(zip_buffer.read()).decode('utf-8')
-            result['_zip'] = zip_base64  # Добавляем архив к результату
+            result['_zip'] = zip_base64
             task.photo = json.dumps(result)
-            
-        except Exception as e:
-            print("Exception!")
+
+        except Exception:
             with open(task.photo, "rb") as file:
                 task.photo = base64.b64encode(file.read()).decode('utf-8')
-    
+
     return task
 
 
@@ -123,40 +118,35 @@ async def update_task(
     db: Session = Depends(get_db),
     current_user: User = Depends(get_current_user)
 ):
-    task = db.query(Task).filter(Task.id == task_id).first()
+    task = TaskRepository.get_task(task_id, db)
     if not task:
         raise HTTPException(status_code=404, detail="Задача не найдена")
 
-    # Сохраняем фото
     photo_paths = {}
     if before_photo:
         photo_paths["before"] = save_file(before_photo)
     if after_photo:
         photo_paths["after"] = save_file(after_photo)
 
-    # Обновляем поля
-    task.title = title
-    task.status = status
-    task.task_type = task_type
-    task.address = address
-    task.device_type = device_type
-    task.device_num = device_num
-    task.team_id = team_id
+    update_data = {
+        "title": title,
+        "status": status,
+        "task_type": task_type,
+        "address": address,
+        "device_type": device_type,
+        "device_num": device_num,
+        "team_id": team_id,
+    }
 
     if photo_paths:
-        task.photo = json.dumps(photo_paths)
+        update_data["photo"] = json.dumps(photo_paths)
 
-    db.commit()
-    db.refresh(task)
-    return task
+    return TaskRepository.update_task(task, update_data, db)
 
 
 @router.delete("/tasks/{task_id}")
 def delete_task(task_id: int, db: Session = Depends(get_db), current_user: User = Depends(get_current_user)):
-    task = db.query(Task).filter(Task.id == task_id).first()
-    if not task:
+    success = TaskRepository.delete_task(task_id, db)
+    if not success:
         raise HTTPException(status_code=404, detail="Задача не найдена")
-    
-    db.delete(task)
-    db.commit()
     return {"detail": "Задача удалена"}
