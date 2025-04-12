@@ -12,12 +12,12 @@ class TaskBase(BaseModel):
     photo: Optional[str]
     team_id: Optional[int]
 
-class TaskCreate(BaseModel):
+class TaskCreate(TaskBase):
     title: str
-    description: str
+    address: str
     status: int
 
-class TaskOut(BaseModel):
+class TaskOut(TaskBase):
     id: int
     task_type: Optional[int]
     address: Optional[str]
