@@ -70,7 +70,7 @@ class TeamOut(TeamBase):
 class UserTeamBase(BaseModel):
     team_id: Optional[int]
     user_id: Optional[int]
-    status: Optional[int]
+    # status: Optional[int]
 
 class UserTeamCreate(UserTeamBase):
     pass
