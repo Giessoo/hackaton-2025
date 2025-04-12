@@ -1,0 +1,6 @@
+FROM postgres
+
+ENV POSTGRES_DB="Hackaton_secon_2025"
+ENV POSTGRES_USER="postgres"
+COPY ./data/bd.sql /docker-entrypoint-initdb.d/
+
