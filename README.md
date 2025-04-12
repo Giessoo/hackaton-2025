@@ -25,7 +25,7 @@
 {
     "name" : "Angelina Jolie",
     "phone" : "+79991234567",
-    "pin" : 0
+    "password" : "123"
 }
 ```
 
@@ -34,7 +34,7 @@
 {
     "name" : "Svyatoslav Yasnoye Kopye",
     "phone" : "+70001112233",
-    "pin" : 1234
+    "password" : "1234"
 }
 ```
 
