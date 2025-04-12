@@ -1,6 +1,8 @@
 import os
 import json
 import base64
+import zipfile
+import io
 from typing import Optional
 from uuid import uuid4
 from fastapi import APIRouter, Depends, HTTPException, UploadFile, File, Form
@@ -81,21 +83,18 @@ def get_task(task_id: int, db: Session = Depends(get_db)):
     
     if task.photo:
         try:
-            photo_paths = json.loads(task.photo)
-            result = {}
-            for key, path in photo_paths.items():
-                try:
-                    with open(path, "rb") as file:
-                        result[key] = file.read()
-                except Exception:
-                    result[key] = path
-            task.photo = json.dumps(result)
-        except json.JSONDecodeError:
-            try:
-                with open(task.photo, "rb") as file:
-                    task.photo = file.read()
-            except Exception:
-                pass
+            zip_buffer = io.BytesIO()
+            with zipfile.ZipFile(zip_buffer, 'w', zipfile.ZIP_DEFLATED) as zipf:
+                zipf.write(task.photo)
+            
+            zip_buffer.seek(0)
+            task.photo = base64.b64encode(zip_buffer.read()).decode('utf-8')
+            
+        except Exception as e:
+            print("Exception!")
+            with open(task.photo, "rb") as file:
+                task.photo = base64.b64encode(file.read()).decode('utf-8')
+    
     return task
 
 
