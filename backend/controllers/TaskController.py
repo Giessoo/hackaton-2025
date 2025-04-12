@@ -19,7 +19,6 @@ def save_file(file: UploadFile) -> str:
     file_path = os.path.join(UPLOAD_FOLDER, filename)
     with open(file_path, "wb") as buffer:
         buffer.write(file.file.read())
-    print(file_path)
     return file_path
 
 @router.post("/tasks", response_model=schemas.TaskOut)
@@ -43,9 +42,27 @@ def get_tasks_with_files(db: Session = Depends(get_db)):
     tasks = db.query(Task).all()
     for task in tasks:
         if task.photo:
-            with open(task.photo, "rb") as file:
-                task.photo = base64.b64encode(file.read()).decode('utf-8')
+            try:
+                # Парсим JSON строку
+                photo_paths = json.loads(task.photo)
+                
+                # Обрабатываем каждый путь
+                result = {}
+                for key, path in photo_paths.items():
+                    try:
+                        with open(path, "rb") as file:
+                            result[key] = base64.b64encode(file.read()).decode('utf-8')
+                    except Exception as file_error:
+                        # Если не удалось прочитать файл, оставляем оригинальный путь
+                        result[key] = path
+                
+                # Преобразуем обратно в JSON строку
+                task.photo = json.dumps(result)
+            except json.JSONDecodeError:
+                # Если это не JSON, оставляем как есть
+                pass
     return tasks
+
 
 # @router.get("/tasks/{task_id}", response_model=schemas.TaskOut)
 # def get_task(task_id: int, db: Session = Depends(get_db)):
@@ -80,6 +97,7 @@ def get_task(task_id: int, db: Session = Depends(get_db)):
             except Exception:
                 pass
     return task
+
 
 @router.put("/tasks/{task_id}", response_model=schemas.TaskOut)
 async def update_task(
