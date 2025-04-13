@@ -40,7 +40,7 @@ dependencies {
     implementation(libs.navigation.fragment)
     implementation(libs.navigation.ui)
     implementation(libs.retrofit)
-    // implementation(libs.retrofit_converter)
+    implementation("com.squareup.retrofit2:converter-gson:2.9.0")
     implementation(libs.gson)
     testImplementation(libs.junit)
     androidTestImplementation(libs.ext.junit)
