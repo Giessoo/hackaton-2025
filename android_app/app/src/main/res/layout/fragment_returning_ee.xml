@@ -1,0 +1,104 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:isScrollContainer="true">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:isScrollContainer="true"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/switch_device_label"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="5dp"
+            android:text="Коммутационный аппарат:"
+            android:textSize="20sp" />
+
+        <RadioGroup
+            android:id="@+id/switch_device_group"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
+
+            <RadioButton
+                android:id="@+id/switch_device_button"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Имеется" />
+
+            <RadioButton
+                android:id="@+id/switch_device_button2"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Отсутствует" />
+
+        </RadioGroup>
+
+        <Space
+            android:layout_width="match_parent"
+            android:layout_height="10dp" />
+
+        <TextView
+            android:id="@+id/place_switch_device_label"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="5dp"
+            android:text="Место прибора учета:"
+            android:textSize="20sp" />
+
+        <RadioGroup
+            android:id="@+id/place_switch_device_group"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
+
+            <RadioButton
+                android:id="@+id/place_switch_device_button"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="В квартире" />
+
+            <RadioButton
+                android:id="@+id/place_switch_device_button2"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="На лестничной площадке" />
+
+        </RadioGroup>
+
+        <Space
+            android:layout_width="match_parent"
+            android:layout_height="15dp" />
+
+        <TextView
+            android:id="@+id/fullname_label"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="5dp"
+            android:text="ФИО собственника:"
+            android:textSize="20sp" />
+
+        <EditText
+            android:id="@+id/fullname"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:ems="10"
+            android:hint="Введите ФИО:"
+            android:inputType="text" />
+
+    </LinearLayout>
+
+</ScrollView>
