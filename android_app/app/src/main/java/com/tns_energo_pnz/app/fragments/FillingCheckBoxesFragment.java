@@ -13,7 +13,13 @@ import androidx.fragment.app.Fragment;
 import com.tns_energo_pnz.app.R;
 import com.tns_energo_pnz.app.activities.BaseActivity;
 
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
 public class FillingCheckBoxesFragment extends Fragment {
+    private final Map<String, List<String>> mapTextsForCheckboxes = new HashMap<>();
+
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
