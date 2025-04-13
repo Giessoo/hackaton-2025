@@ -1,0 +1,203 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:isScrollContainer="true">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:isScrollContainer="true"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/act_label"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="5dp"
+            android:text="Акт:"
+            android:textSize="20sp" />
+
+        <RadioGroup
+            android:id="@+id/act_group"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
+
+            <RadioButton
+                android:id="@+id/act_button"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Осуществления проверки введенного ограничения режима потребления" />
+
+            <RadioButton
+                android:id="@+id/act_button2"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="О самовольном подключении к электрическим сетям" />
+
+        </RadioGroup>
+
+        <TextView
+            android:id="@+id/switch_device_label"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="5dp"
+            android:text="Коммутационный аппарат:"
+            android:textSize="20sp" />
+
+        <RadioGroup
+            android:id="@+id/switch_device_group"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
+
+            <RadioButton
+                android:id="@+id/switch_device_button"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Имеется" />
+
+            <RadioButton
+                android:id="@+id/switch_device_button2"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Отсутствует" />
+
+        </RadioGroup>
+
+        <Space
+            android:layout_width="match_parent"
+            android:layout_height="10dp" />
+
+        <TextView
+            android:id="@+id/violations_label"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="5dp"
+            android:text="Нарушения:"
+            android:textSize="20sp" />
+
+        <RadioGroup
+            android:id="@+id/violations_group"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
+
+            <RadioButton
+                android:id="@+id/violations_button"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Имееются" />
+
+            <RadioButton
+                android:id="@+id/violations_button2"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Отсутствуют" />
+
+        </RadioGroup>
+
+        <Space
+            android:layout_width="match_parent"
+            android:layout_height="10dp" />
+
+        <TextView
+            android:id="@+id/place_switch_device_label"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="5dp"
+            android:text="Место прибора учета:"
+            android:textSize="20sp" />
+
+        <RadioGroup
+            android:id="@+id/place_switch_device_group"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
+
+            <RadioButton
+                android:id="@+id/place_switch_device_button"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="В квартире" />
+
+            <RadioButton
+                android:id="@+id/place_switch_device_button2"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="На лестничной площадке" />
+
+        </RadioGroup>
+
+        <Space
+            android:layout_width="match_parent"
+            android:layout_height="10dp" />
+
+        <TextView
+            android:id="@+id/supply_power_label"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="5dp"
+            android:text="Подача электроэнергии:"
+            android:textSize="20sp" />
+
+        <RadioGroup
+            android:id="@+id/power_supply_group"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
+
+            <RadioButton
+                android:id="@+id/power_supply_button"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Приостновлена" />
+
+            <RadioButton
+                android:id="@+id/power_supply_button2"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Ограничена" />
+
+        </RadioGroup>
+
+        <Space
+            android:layout_width="match_parent"
+            android:layout_height="15dp" />
+
+        <TextView
+            android:id="@+id/fullname_label"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="5dp"
+            android:text="ФИО собственника:"
+            android:textSize="20sp" />
+
+        <EditText
+            android:id="@+id/fullname"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:ems="10"
+            android:hint="Введите ФИО:"
+            android:inputType="text" />
+
+    </LinearLayout>
+</ScrollView>

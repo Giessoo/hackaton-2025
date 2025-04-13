@@ -5,5 +5,12 @@
     <string name="add_inspector">Добавить инспектора</string>
     <string name="press_for_overview">Нажмите для предпросмотра</string>
     <string name="back">Назад</string>
+    <string name="stopping_ee">О введении ограничения (приостновлении) коммунальной услуги по электроснабжению</string>
+    <string name="access_present">Доступ к коммутационному аппарату отсутствует</string>
+    <string name="limited">Подача электроэнергии ограничена</string>
+    <string name="stopped">Подача электроэнергии остановлена</string>
+    <string name="returned">Подача электроэнергии возобновлена</string>
+    <string name="switching_device_present">Коммутационный аппарат имеется</string>
     <string name="cancel">Отмена</string>
+    <string name="add_photography">Добавить фото</string>
 </resources>
