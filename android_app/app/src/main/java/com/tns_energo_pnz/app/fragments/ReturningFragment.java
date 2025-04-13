@@ -17,7 +17,6 @@ public class ReturningFragment extends BaseFragment {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_returning_ee, container, false);
-
         return view;
     }
 }

@@ -23,9 +23,11 @@
         </activity>
         <activity
             android:name=".activities.InspectorActivity"
+            android:windowSoftInputMode="adjustPan|stateHidden"
             android:exported="true"/>
         <activity
             android:name=".activities.FillingActivity"
+            android:windowSoftInputMode="adjustPan|stateHidden"
             android:exported="true"/>
     </application>
 
