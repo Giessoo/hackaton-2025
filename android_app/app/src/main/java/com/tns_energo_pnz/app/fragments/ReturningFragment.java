@@ -11,7 +11,7 @@ import androidx.fragment.app.Fragment;
 
 import com.tns_energo_pnz.app.R;
 
-public class ReturningFragment extends Fragment {
+public class ReturningFragment extends BaseFragment {
 
     @Nullable
     @Override

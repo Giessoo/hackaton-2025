@@ -21,7 +21,7 @@
         app:layout_constraintTop_toTopOf="parent">
 
         <androidx.fragment.app.FragmentContainerView
-            android:id="@+id/fragmentContainerView"
+            android:id="@+id/fragment_container"
             android:name="com.tns_energo_pnz.app.fragments.ReturningFragment"
             android:layout_width="match_parent"
             android:layout_height="590dp" />

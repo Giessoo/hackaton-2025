@@ -11,7 +11,7 @@ import androidx.fragment.app.Fragment;
 
 import com.tns_energo_pnz.app.R;
 
-public class StopLimitFragment extends Fragment {
+public class StopLimitFragment extends BaseFragment {
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {

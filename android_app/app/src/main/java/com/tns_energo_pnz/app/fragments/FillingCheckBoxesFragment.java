@@ -17,8 +17,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public class FillingCheckBoxesFragment extends Fragment {
-    private final Map<String, List<String>> mapTextsForCheckboxes = new HashMap<>();
+public class FillingCheckBoxesFragment extends BaseFragment {
+
 
     @Nullable
     @Override

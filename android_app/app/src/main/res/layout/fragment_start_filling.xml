@@ -24,13 +24,14 @@
             android:orientation="vertical">
 
             <TextView
-                android:id="@+id/textView"
+                android:id="@+id/type_work_label"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Тип работы" />
+                android:text="Тип работы:"
+                android:textSize="16sp" />
 
             <Spinner
-                android:id="@+id/spinner"
+                android:id="@+id/type_work"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content" />
 
@@ -46,13 +47,14 @@
             android:orientation="vertical">
 
             <TextView
-                android:id="@+id/textView"
+                android:id="@+id/address_label"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Адрес" />
+                android:text="Адрес"
+                android:textSize="16sp" />
 
             <EditText
-                android:id="@+id/editTextText"
+                android:id="@+id/address_edit_text"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:ems="10"
@@ -71,15 +73,19 @@
             android:orientation="vertical">
 
             <TextView
-                android:id="@+id/textView"
+                android:id="@+id/type_device_label"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Тип прибора" />
+                android:text="Тип прибора:"
+                android:textSize="16sp" />
 
-            <Spinner
-                android:id="@+id/spinner"
+            <EditText
+                android:id="@+id/type_device"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content" />
+                android:layout_height="wrap_content"
+                android:ems="10"
+                android:hint="Введите номер..."
+                android:inputType="text" />
 
         </LinearLayout>
 
@@ -93,13 +99,14 @@
             android:orientation="vertical">
 
             <TextView
-                android:id="@+id/textView"
+                android:id="@+id/number_device_label"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Номер прибора учета" />
+                android:text="Номер прибора учета"
+                android:textSize="16sp" />
 
             <EditText
-                android:id="@+id/editTextText"
+                android:id="@+id/number_device_edit_text"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:ems="10"
