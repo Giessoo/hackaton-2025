@@ -8,12 +8,12 @@ import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
+import android.text.format.DateFormat;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageButton;
-import android.widget.Toast;
 
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
@@ -25,6 +25,7 @@ import androidx.fragment.app.FragmentTransaction;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.tns_energo_pnz.app.FileUtils;
 import com.tns_energo_pnz.app.R;
 import com.tns_energo_pnz.app.RecyclerViewAdapters.MediaAdapter;
 import com.tns_energo_pnz.app.activities.BaseActivity;
@@ -38,9 +39,10 @@ public class FillingCheckBoxesFragment extends BaseFragment {
     private MediaAdapter mediaAdapter;
     private final int REQUEST_CODE_READ_EXTERNAL_STORAGE = 41;
 
-    public static FillingCheckBoxesFragment newInstance(String data) {
+    public static FillingCheckBoxesFragment newInstance(int type_work, String address) {
         Bundle args = new Bundle();
-        args.putString("TYPE_WORK", data);
+        args.putInt("TYPE_WORK", type_work);
+        args.putString("ADDRESS", address);
         return BaseFragment.newInstance(FillingCheckBoxesFragment.class, args);
     }
 
@@ -59,7 +61,7 @@ public class FillingCheckBoxesFragment extends BaseFragment {
         Button confirm = view.findViewById(R.id.confirm);
         Button back = view.findViewById(R.id.back_button);
         ImageButton pick_image = view.findViewById(R.id.image_pick);
-        confirm.setOnClickListener(v -> ((BaseActivity)getActivity()).switchFragment(new OverviewFragment()));
+        confirm.setOnClickListener(this::confirm);
         back.setOnClickListener(v -> ((BaseActivity)getActivity()).switchFragment(new StartFillingFragment()));
         pick_image.setOnClickListener(v -> {
             getPermission(v);
@@ -67,6 +69,19 @@ public class FillingCheckBoxesFragment extends BaseFragment {
             intent.putExtra(Intent.EXTRA_ALLOW_MULTIPLE, true);
             imagePickerLauncher.launch(intent);
         });
+    }
+
+    private void confirm(View view){
+        String filename = "photo";
+        String address = getArguments().getString("ADDRESS").replace(".", "_");
+        String formattedDateTime = DateFormat.format("dd_MM_yyyy_HH_mm", new java.util.Date()).toString();
+        String dirname = String.format("%s_%s", address, formattedDateTime);
+        String fullPathToDir = String.format(view.getContext().getFilesDir() + "/%s", dirname);
+        List<Uri> uris = mediaAdapter.getImageUris();
+        for (int i = 0; i < uris.size(); i++) {
+            FileUtils.copyFileFromUri(view.getContext(), uris.get(i), String.format("%s/%s%d%s", fullPathToDir, filename, i, ".jpg"));
+        }
+        ((BaseActivity)getActivity()).switchFragment(new OverviewFragment());
     }
 
     private void initImageAdapter(View view) {
@@ -115,14 +130,14 @@ public class FillingCheckBoxesFragment extends BaseFragment {
 
     private void setFragment() {
         FragmentTransaction fragmentTransaction = getChildFragmentManager().beginTransaction();
-        switch (getArguments().getString("TYPE_WORK")){
-            case "0":
+        switch (getArguments().getInt("TYPE_WORK")){
+            case 0:
                 fragmentTransaction.add(R.id.fragment_container, new LimitControllerFragment());
                 break;
-            case "1":
+            case 1:
                 fragmentTransaction.add(R.id.fragment_container, new StopLimitFragment());
                 break;
-            case "2":
+            case 2:
                 fragmentTransaction.add(R.id.fragment_container, new ReturningFragment());
                 break;
         }

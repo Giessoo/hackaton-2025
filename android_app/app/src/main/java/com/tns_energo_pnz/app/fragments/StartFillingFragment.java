@@ -7,6 +7,7 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.Spinner;
 
 import androidx.annotation.NonNull;
@@ -31,7 +32,8 @@ public class StartFillingFragment extends BaseFragment {
         initSpinner(view, types_work);
         button.setOnClickListener(v -> ((BaseActivity)getActivity()).switchFragment(
                 FillingCheckBoxesFragment.newInstance(
-                        String.valueOf(currentPositionTypeWorkSpinner)
+                        currentPositionTypeWorkSpinner,
+                        ((EditText)view.findViewById(R.id.address_edit_text)).getText().toString()
                 )
         ));
         return view;
